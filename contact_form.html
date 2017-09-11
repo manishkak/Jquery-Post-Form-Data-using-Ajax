@@ -1,0 +1,193 @@
+<!DOCTYPE html>  
+ <html>  
+      <head>  
+           <title>Jquery Post Form Data using Ajax serialize() method</title>  
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
+           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+           <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+		   <style>.error {color: #FF0000;}</style>
+		    <script>  
+			 $(document).ready(function(){  
+			$('#submit').click(function(){		  
+					  $('#submit_form').prop('disabled', true);
+					  var name = $('#name').val();
+					  var message = $('#message').val();
+					  var comment = $('#comment').val();
+					//$("#name").focusout(function() {
+					var name = $("#name").val();
+					//alert(name.length);
+					//alert(message.length);
+					if(name.length == 0)
+					{
+						$("#name_err1").show();
+						$("#name_err").hide();
+						return false();
+					}
+					else if(name.length<5 || name.length>20)
+					{
+						$("#name_err").show();
+						$("#name_err1").hide();
+						return false();
+					}
+					else
+					{
+						$("#name_err").hide();
+					}
+				//alert(message.length);
+				if(message.length==0)
+				{
+					$("#msg_err").show();
+					return false();
+				}
+				else
+				{
+					$("#msg_err").hide();
+				}
+				if(comment.length==0)
+				{
+					$("#cmnt_err").show();
+					return false();
+				}
+				else
+				{
+					$("#cmnt_err").hide();
+				}
+				$.ajax({  
+							 url:"contact_form.php",  
+							 method:"POST",  
+							 data:$('#submit_form').serialize(),  
+							 success:function(data){  
+								  $('form').trigger("reset");  
+								  $('#response').html(data);  
+								  //window.location.href = "contact_form.php";
+							}  
+						});  
+				   });  
+			 });  
+ </script>
+      </head>  
+      <body>  
+           <br /><br />  
+           <div class="container" style="width:600px;">  
+                <h3>Jquery Post Form Data using Ajax</h3><br />  
+                <form id="submit_form">  
+                     <label>Name</label><span id="name_err" style="display:none;color:red"> *Name length should be >4 and <20</span><span id="name_err1" style="display:none;color:red"> *Name cannot be empty</span>  
+                     <input type="text" name="name" id="name" class="form-control" />  
+                     <br />  
+                     <label>Message</label><span id="msg_err" style="display:none;color:red"> *Message can't be empty</span> 
+                     <textarea name="message" id="message" class="form-control"></textarea>  
+                     <br />
+					<label>Comments</label><span id="cmnt_err" style="display:none;color:red"> *Comment can't be empty</span>   
+                     <textarea name="comment" placeholder="add comment here......." id="comment" class="form-control"></textarea>  
+                     <br />					 
+					 Gender:<br>
+					 Male<input type="checkbox" name="gender" value="male">
+					 Female<input type="checkbox" name="gender" value="female">
+                     <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />  
+                </form>  
+                <div id="response"></div>  
+           </div>  
+      </body>  
+ </html>  
+  
+ 
+ <!--
+ <html>
+<head>
+<title>Simple jQuery Contact Form With Validation</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link rel="stylesheet" href="contact_form.css" />
+<script>
+$(document).ready(function() {
+/*$("#email").focusout(function() {
+	var email = $("#email").val();
+	var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
+	if(pattern.test($("#email").val())) {
+		$("#email_error_message").hide();
+	} else {
+		$("#email_error_message").html("Invalid email address");
+		$("#email_error_message").show();
+	}
+});
+$("#name").focusout(function() {
+	var name = $("#name").val();
+	//alert(name.length);
+	if(name.length<5 || name.length>20)
+	{
+		$("#name_err").show();
+	}
+	else
+	{
+		$("#name_err").hide();
+	}
+});
+$("#referral_y").click(function() {
+	$("#referral_name").toggle();
+});
+$("#submit").click(function() {
+var name = $("#name").val();
+var email = $("#email").val();
+var message = $("#message").val();
+var contact = $("#contact").val();
+$("#returnmessage").empty(); // To empty previous error/success message.
+// Checking for blank fields.
+if (name == '') {
+alert("Please Fill Name Fields");
+}
+else if (email == '' || contact == '') {
+alert("Please Fill Required Fields");
+} else {*/
+$("#submit").click(function() {
+	$.ajax({
+           type: "POST",
+           url: "contact_form.php",
+           data: $("#submit").serialize(), // serializes the form's elements.
+           success: function(data)
+           {
+				$('form').trigger("reset");
+		   }
+         });
+    //e.preventDefault(); // avoid to execute the actual submit of the form.
+});
+/*$.post("contact_form.php", {
+name1: name,
+email1: email,
+message1: message,
+contact1: contact
+}, function(data) {
+$("#returnmessage").append(data);
+if (data == "Your Query has been received, We will contact you soon.") {
+$("#form")[0].reset();
+}
+});*/
+//}
+});
+</script>
+<!--<script src="contact_form.js"></script>
+</head>
+<body>
+<div id="mainform">
+<h2>Simple jQuery Contact Form With Validation</h2>
+<!-- Required Div Starts Here
+<form id="form">
+<h3>Contact Form</h3>
+<p id="returnmessage"></p>
+<label>Name: <span>*</span><span id="name_err" style="display:none">enter more than 4 char.</span></label>
+<input type="text" id="name" placeholder="Name"/>
+<label>Email: <span>*</span><span id="email_error_message"><span></label>
+<input type="text" id="email" placeholder="Email"/>
+<label>Contact No: <span>*</span></label>
+<input type="text" id="contact" maxlength="10" placeholder="10 digit Mobile no."/>
+<label>Message:</label>
+<textarea id="message" placeholder="Message......."></textarea>
+Referral:<br/>
+Yes:<input type="checkbox" id="referral_y" value="yes"/>
+No:<input type="checkbox" id="referral_n" value="no"/>
+<div style="display:none" id="referral_name">Referred by:<input type="text"  /></div>
+<input type="button" id="submit" value="Send Message"/>
+</form>
+</div>
+</body>
+</html>
+ -->
+ 
